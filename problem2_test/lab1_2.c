@@ -5,13 +5,13 @@ int main(void){
     FILE *input_file;
     FILE *output_file;
 
-    input_file = fopen_s("lab1_2_input.txt", "r");
-    output_file = fopen_s("lab1_2_output_file.txt","wt");
+    input_file = fopen("lab1_2_input.txt", "r");
+    output_file = fopen("lab1_2_output_file.txt","wt");
     int n;
     int arr[100];
     fscanf(input_file, "%d", &n);
     for(int i = 0; i < n; i++){
-        fscanf(input_file, "%d", arr[i]);
+        fscanf(input_file, "%d", &arr[i]);
     }
     s_sort(arr, n);
     for(int i = 0; i < n; i++){

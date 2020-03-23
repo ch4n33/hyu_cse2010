@@ -1,11 +1,11 @@
-include <stdio.h>
+#include <stdio.h>
 
 int main(){
     FILE *input_file;
     FILE *output_file;
 
-    input_file = fopen_s("lab1_1_input.txt","r");
-    output_file = fopen_s("lab1_1_output.text","wt");
+    input_file = fopen("lab1_1_input.txt","r");
+    output_file = fopen("lab1_1_output.text","wt");
     
     int n;
     int arr[100];
