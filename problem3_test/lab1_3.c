@@ -1,4 +1,5 @@
 #include <stdio.h>
+#include <string.h>
 #define MAX_LENGTH 30
 
 typedef struct{
@@ -36,6 +37,7 @@ int main(void){
 
 void s_sort(student *arr, const int n){
     int pivot, temp, i, j;
+    char tempc[MAX_LENGTH];
     for(i = 0; i < n; i++){
         pivot = i;
         for(j = i+1; j < n; j++){
@@ -47,6 +49,10 @@ void s_sort(student *arr, const int n){
             temp = arr[i].id;
             arr[i].id = arr[pivot].id;
             arr[pivot].id = temp;
+
+            strcpy(tempc, arr[i].name);
+            strcpy(arr[i].name, arr[pivot].name);
+            strcpy(arr[pivot].name, tempc);
         }
     }
 }
