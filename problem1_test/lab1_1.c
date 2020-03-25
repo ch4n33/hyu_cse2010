@@ -5,19 +5,18 @@ int main(){
     FILE *output_file;
 
     input_file = fopen("lab1_1_input.txt","r");
-    output_file = fopen("lab1_1_output.text","wt");
+    output_file = fopen("lab1_1_output.txt","wt");
     
-    int n;
+    int i, n, st, ed;
     int arr[100];
-    int st, ed;
     int sum=0;
 
     fscanf(input_file, "%d", &n);
-    for(int i = 0; i < n; i++){
+    for(i = 0; i < n; i++){
         fscanf(input_file, "%d", &arr[i]);
     }
     fscanf(input_file, "%d %d", &st, &ed);
-    for(int i = st; i<=ed; i++){
+    for(i = st; i<=ed; i++){
         sum += arr[i];
     }
     fprintf(output_file, "%d", sum);

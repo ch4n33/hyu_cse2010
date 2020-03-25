@@ -6,15 +6,15 @@ int main(void){
     FILE *output_file;
 
     input_file = fopen("lab1_2_input.txt", "r");
-    output_file = fopen("lab1_2_output_file.txt","wt");
-    int n;
+    output_file = fopen("lab1_2_output.txt","wt");
+    int i, n;
     int arr[100];
     fscanf(input_file, "%d", &n);
-    for(int i = 0; i < n; i++){
+    for(i = 0; i < n; i++){
         fscanf(input_file, "%d", &arr[i]);
     }
     s_sort(arr, n);
-    for(int i = 0; i < n; i++){
+    for(i = 0; i < n; i++){
         fprintf(output_file, "%d ", arr[i]);
     }
     fclose(input_file);
@@ -22,11 +22,10 @@ int main(void){
     return 0;
 }
 void s_sort(int *arr, const int n){
-    int pivot;
-    int temp;
-    for(int i = 0; i < n; i++){
+    int pivot, temp, i, j;
+    for(i = 0; i < n; i++){
         pivot = i;
-        for(int j = i+1; j < n; j++){
+        for(j = i+1; j < n; j++){
             if(arr[pivot] < arr[j]){
                 pivot = j;
             }
