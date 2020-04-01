@@ -175,6 +175,7 @@ void io(List L, char * a[]){
         }
 
     }
+    DeleteList(L);
     outp();
 }
 
