@@ -6,19 +6,20 @@
 #define SIZE (sets->size_maze)
 //#define TEST
 
-typedef struct _DisjointSet{
+struct _DisjointSet{
     int size_maze;
     int *ptr_arr;
-}disjointSets;
+};
+typedef struct _DisjointSet DisjointSets;
 
-void init(disjointSets *sets, disjointSets* maze_print, int num);
-void Union(disjointSets *sets, int i, int j);
-int find(disjointSets *sets, int i);
-void createMaze(disjointSets *sets, disjointSets *maze_print, int num);
-void printMaze(disjointSets *maze_print, int num);
-void freeMaze(disjointSets *sets, disjointSets *maze_print);
+void init(DisjointSets *sets, DisjointSets* maze_print, int num);
+void union_(DisjointSets *sets, int i, int j);
+int find(DisjointSets *sets, int i);
+void createMaze(DisjointSets *sets, DisjointSets *maze_print, int num);
+void printMaze(DisjointSets *maze_print, int num);
+void freeMaze(DisjointSets *sets, DisjointSets *maze_print);
 FILE *I, *O;//file io
-void init(disjointSets *sets, disjointSets* maze_print, int num) {
+void init(DisjointSets *sets, DisjointSets* maze_print, int num) {
     sets->size_maze = num;
     sets->ptr_arr = (int*) malloc(sizeof(int) * (SQUARE + 1));
     maze_print->ptr_arr = (int*) malloc(sizeof(int) * (2*SQUARE + 2*SIZE + 1));
@@ -33,7 +34,7 @@ void init(disjointSets *sets, disjointSets* maze_print, int num) {
     maze_print->ptr_arr[1+SIZE+SQUARE] = 0;
     maze_print->ptr_arr[2*SQUARE + 2*SIZE] = 0;
 }
-void Union(disjointSets *sets, int i, int j){
+void union_(DisjointSets *sets, int i, int j){
     if (!sets){
         return;
     }
@@ -48,35 +49,35 @@ void Union(disjointSets *sets, int i, int j){
     }
     sets->ptr_arr[i] = j;
 }
-void breakWall(disjointSets *sets, disjointSets *maze_print, int i){
+void breakWall(DisjointSets *sets, DisjointSets *maze_print, int i){
     if (!sets || !maze_print){
         return;
     }
     if (rand()%2){
         if (i > SIZE && (find(sets, i)) != find(sets, i - SIZE)){//up -
-            Union(sets, i, i - SIZE);
+            union_(sets, i, i - SIZE);
             maze_print->ptr_arr[i] = 0;
             return;
         }
         if ((i-1)%SIZE != 0 &&(find(sets, i) != find(sets, i-1))){//left |
-            Union(sets, i, i-1);
+            union_(sets, i, i-1);
             maze_print->ptr_arr[1 + ((i-1)%SIZE)*SIZE + ((i-1)/SIZE) + SQUARE+SIZE] = 0;
             return;
         }
     }else {
         if ((i - 1) % SIZE != 0 && (find(sets, i) != find(sets, i - 1))) {//left |
-            Union(sets, i, i - 1);
+            union_(sets, i, i - 1);
             maze_print->ptr_arr[1 + ((i - 1) % SIZE) * SIZE + ((i - 1) / SIZE) + SQUARE + SIZE] = 0;
             return;
         }
         if (i > SIZE && (find(sets, i)) != find(sets, i - SIZE)) {//up -
-            Union(sets, i, i - SIZE);
+            union_(sets, i, i - SIZE);
             maze_print->ptr_arr[i] = 0;
             return;
         }
     }
 }
-int find(disjointSets *sets, int i){
+int find(DisjointSets *sets, int i){
     if (!sets){
         return 0;
     }
@@ -88,7 +89,7 @@ int find(disjointSets *sets, int i){
     }
     return sets->ptr_arr[i] = find(sets, sets->ptr_arr[i]);
 }
-char isEnd(disjointSets *sets){
+char isEnd(DisjointSets *sets){
     int i=1 , count = 0;
     while (i<SQUARE){
         if (sets->ptr_arr[i]==0){
@@ -101,7 +102,7 @@ char isEnd(disjointSets *sets){
     }
     return 1;
 }
-void createMaze(disjointSets *sets, disjointSets *maze_print, int num){
+void createMaze(DisjointSets *sets, DisjointSets *maze_print, int num){
     while(!isEnd(sets) || find(sets, 1)!=find(sets, SQUARE)){
         breakWall(sets, maze_print, 1+ rand()%(num*num));
 #ifdef TEST
@@ -111,7 +112,7 @@ void createMaze(disjointSets *sets, disjointSets *maze_print, int num){
     }
 }
 
-void printMaze(disjointSets *maze_print, int num){
+void printMaze(DisjointSets *maze_print, int num){
     if (!maze_print){
         return;
     }
@@ -150,7 +151,7 @@ void printMaze(disjointSets *maze_print, int num){
     }
     fprintf(O, "+\n");
 }
-void freeMaze(disjointSets *sets, disjointSets *maze_print){
+void freeMaze(DisjointSets *sets, DisjointSets *maze_print){
     if (!sets || !maze_print){
         return;
     }
@@ -168,9 +169,9 @@ int main(int argc, char*argv[]) {
     int num;
     fscanf(I, "%d", &num);
     fclose(I);
-    disjointSets *sets, *maze_print;
-    sets = (disjointSets*) malloc(sizeof(disjointSets));
-    maze_print = (disjointSets*) malloc(sizeof(disjointSets));
+    DisjointSets *sets, *maze_print;
+    sets = (DisjointSets*) malloc(sizeof(DisjointSets));
+    maze_print = (DisjointSets*) malloc(sizeof(DisjointSets));
     init(sets,maze_print,num);
     createMaze(sets, maze_print, num);
     printMaze(maze_print, num);
