@@ -104,8 +104,8 @@ int Dequeue(Queue Q){
 }
 void Sort(Graph G, int* arr){
     int i,j, temp;
-    for ( i = 1; i < arr[0]; ++i) {
-        for (j = i+1; j < arr[0]; ++j) {
+    for ( i = 1; i <= arr[0]; ++i) {
+        for (j = i; j <= arr[0]; ++j) {
             if(G->node[arr[i]] > G->node[arr[j]]){
                 temp = arr[i];
                 arr[i] = arr[j];
@@ -157,7 +157,7 @@ void TopSort(Graph G){///body of Topological sort.
         degree[i]=getDegree(G, i);
     }
     Queue Q = MakeNewQueue(G->size);
-    for (i = 0; i < G->size; ++i) {
+    for (i = 0; i < G->size; i++) {
         if(degree[i] == 0) {
             inputList[0]++;
             inputList[inputList[0]] = i;
@@ -165,33 +165,40 @@ void TopSort(Graph G){///body of Topological sort.
     }
     Sort(G, inputList);
     for (i=1; i<=inputList[0]; i++){
-        for (j = 0; j < G->size; ++j) {
-            if (G->matrix[inputList[i]][j] == 1){
+        for (j = 0; j < G->size; j++) {
+            if (G->matrix[inputList[i]][j] == 1 && degree[j]!=-1){
                 degree[j]--;
             }
         }
         Enqueue(Q, inputList[i]);
     }
-    while(Q->qsize != 0){
+    for(i=1; i<=inputList[0]; i++){
+        degree[inputList[i]]= -1;
+
+    while(Q->qsize > 0){
+
         inputList[0] =0;
         int v = Dequeue(Q);
         if(v >=0){
             fprintf(O,"%d ", G->node[v]);
         }
-        for (i = 0; i < G->size; ++i) {
-            if ( G->matrix[v][i] == 1 && degree[i] == 0){
+        for (i = 0; i < G->size; i++) {
+            if (degree[i] == 0){
                 inputList[0]++;
                 inputList[inputList[0]] = i;
             }
         }
         Sort(G, inputList);
-        for (i = 1; i <= inputList[0]; ++i) {
+        for (i = 1; i <= inputList[0]; i++) {
             for (j = 0; j < G->size; ++j) {
-                if (G->matrix[inputList[i]][j] == 1){
+                if (G->matrix[inputList[i]][j] == 1 && degree[j]!=-1){
                     degree[j]--;
                 }
             }
             Enqueue(Q, inputList[i]);
+        }
+        for (i = 1; i <= inputList[0]; i++) {
+            degree[inputList[i]] = -1;
         }
     }
     fprintf(O,"\n");
